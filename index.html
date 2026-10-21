@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Calculadora de Médias</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .cabecalho {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .icone {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 58px;
+            height: 58px;
+            background: #087f5b;
+            color: white;
+            border-radius: 16px;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin: 8px 0;
+        }
+
+        .subtitulo {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .cartao {
+            background: white;
+            padding: 26px;
+            border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #1e293b;
+        }
+
+        input:focus {
+            outline: 2px solid #087f5b;
+            outline-offset: 1px;
+            border-color: #087f5b;
+        }
+
+        .notas {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #087f5b;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #066749;
+        }
+
+        button:focus-visible {
+            outline: 3px solid #34d399;
+            outline-offset: 3px;
+        }
+
+        .resultado {
+            margin-top: 22px;
+            padding: 22px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            overflow-wrap: anywhere;
+        }
+
+        .resultado[hidden] {
+            display: none;
+        }
+
+        .media {
+            font-size: 38px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .aprovado {
+            color: #087f5b;
+        }
+
+        .reprovado {
+            color: #dc2626;
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .estado.reprovado {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .detalhes {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 16px;
+        }
+
+        .erro {
+            color: #b91c1c;
+            font-size: 14px;
+            margin-top: 14px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 18px 12px;
+            }
+
+            .cartao {
+                padding: 18px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .media {
+                font-size: 32px;
+            }
+
+            .notas {
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 340px) {
+            .notas {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header class="cabecalho">
+            <div class="icone" aria-hidden="true">🎓</div>
+            <h1>Calculadora de Médias</h1>
+            <p class="subtitulo">
+                Calcula a média e consulta o resultado escolar.
+            </p>
+        </header>
+
+        <section class="cartao">
+
+            <form id="formulario">
+
+                <div class="campo">
+                    <label for="aluno">Nome do aluno</label>
+                    <input
+                        type="text"
+                        id="aluno"
+                        placeholder="Introduz o nome"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="disciplina">Disciplina</label>
+                    <input
+                        type="text"
+                        id="disciplina"
+                        placeholder="Ex.: Matemática"
+                        required
+                    >
+                </div>
+
+                <h3>Notas do aluno</h3>
+
+                <div class="notas">
+
+                    <div class="campo">
+                        <label for="nota1">Nota 1</label>
+                        <input type="number" id="nota1"
+                            min="0" max="20" step="any"
+                            placeholder="0 a 20" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="nota2">Nota 2</label>
+                        <input type="number" id="nota2"
+                            min="0" max="20" step="any"
+                            placeholder="0 a 20" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="nota3">Nota 3</label>
+                        <input type="number" id="nota3"
+                            min="0" max="20" step="any"
+                            placeholder="0 a 20" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="nota4">Nota 4 (opcional)</label>
+                        <input type="number" id="nota4"
+                            min="0" max="20" step="any"
+                            placeholder="Opcional">
+                    </div>
+
+                </div>
+
+                <div class="campo">
+                    <label for="minima">
+                        Nota mínima para aprovação
+                    </label>
+                    <input type="number" id="minima"
+                        min="0" max="20" step="any"
+                        value="10" required>
+                </div>
+
+                <button type="submit">Calcular média</button>
+
+                <p id="erro" class="erro" role="alert"></p>
+
+            </form>
+
+            <section id="resultado"
+                class="resultado"
+                aria-live="polite"
+                hidden>
+
+                <h2>Resultado da avaliação</h2>
+
+                <p id="nomeResultado"></p>
+                <p id="disciplinaResultado"></p>
+
+                <p>Média final</p>
+                <div id="mediaResultado" class="media"></div>
+
+                <span id="estadoResultado" class="estado"></span>
+
+                <div id="detalhesResultado"
+                    class="detalhes"></div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+    <script>
+        const formulario =
+            document.getElementById("formulario");
+
+        formulario.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const aluno =
+                document.getElementById("aluno").value.trim();
+
+            const disciplina =
+                document.getElementById("disciplina").value.trim();
+
+            const campoNotas = [
+                document.getElementById("nota1"),
+                document.getElementById("nota2"),
+                document.getElementById("nota3"),
+                document.getElementById("nota4")
+            ];
+
+            const campoMinima =
+                document.getElementById("minima");
+
+            const erro = document.getElementById("erro");
+            const resultado = document.getElementById("resultado");
+
+            erro.textContent = "";
+            resultado.hidden = true;
+
+            // Recolher e validar as notas preenchidas.
+            const notas = [];
+
+            for (const campo of campoNotas) {
+
+                if (campo.value.trim() === "") {
+                    if (campo.required) {
+                        erro.textContent =
+                            "Preenche as três primeiras notas.";
+                        return;
+                    }
+
+                    continue;
+                }
+
+                const nota = Number(campo.value);
+
+                if (!Number.isFinite(nota) ||
+                    nota < 0 || nota > 20) {
+
+                    erro.textContent =
+                        "Todas as notas devem estar entre 0 e 20.";
+                    return;
+                }
+
+                notas.push(nota);
+            }
+
+            const minima = Number(campoMinima.value);
+
+            if (campoMinima.value.trim() === "" ||
+                !Number.isFinite(minima) ||
+                minima < 0 || minima > 20) {
+
+                erro.textContent =
+                    "A nota mínima deve estar entre 0 e 20.";
+                return;
+            }
+
+            if (aluno === "" || disciplina === "") {
+                erro.textContent =
+                    "Preenche o nome e a disciplina.";
+                return;
+            }
+
+            // Calcular a soma das notas.
+            let soma = 0;
+
+            for (const nota of notas) {
+                soma += nota;
+            }
+
+            // Calcular a média aritmética.
+            const media = soma / notas.length;
+
+            // Verificar o resultado escolar.
+            const aprovado = media >= minima;
+
+            // Apresentar os resultados com segurança.
+            document.getElementById("nomeResultado")
+                .textContent = "Aluno: " + aluno;
+
+            document.getElementById("disciplinaResultado")
+                .textContent = "Disciplina: " + disciplina;
+
+            const campoMedia =
+                document.getElementById("mediaResultado");
+
+            campoMedia.textContent =
+                media.toLocaleString("pt-PT", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }) + " valores";
+
+            campoMedia.className = aprovado
+                ? "media aprovado"
+                : "media reprovado";
+
+            const estado =
+                document.getElementById("estadoResultado");
+
+            estado.textContent = aprovado
+                ? "APROVADO"
+                : "REPROVADO";
+
+            estado.className = aprovado
+                ? "estado"
+                : "estado reprovado";
+
+            document.getElementById("detalhesResultado")
+                .textContent =
+                "Notas consideradas: " + notas.length +
+                " | Soma: " + soma +
+                " | Nota mínima: " + minima;
+
+            resultado.hidden = false;
+        });
+    </script>
+
+</body>
+</html>
+
